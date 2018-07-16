@@ -3,6 +3,8 @@
   "version": "1.0.0",
   "description": "A configurable notification system that can be integrated as a module in a Vue.js web application.",
   "author": "ExMachina SAGL <info@exmachina.ch>",
+  "homepage": "https://github.com/ExMachinaSAGL/raise-the-app",
+  "license": "Apache-2.0",
   "contributors": [
     {
       "name": "Alexander Fischer"
