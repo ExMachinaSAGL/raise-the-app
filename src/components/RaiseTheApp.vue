@@ -1,0 +1,171 @@
+<template>
+  <div class="raisetheapp">
+    <a href="#" title="Toggle notifications" class="notifications-toggle" @click="toggleNotifications">
+      <notification-top-bar :show-notifications="showNotifications"></notification-top-bar>
+    </a>
+    <transition name="toggle">
+      <notifications-view
+        id="notifications-view"
+        v-if="showNotifications"
+        :base-server-url="baseServerUrl"
+        v-on-clickaway="closeDropdown">
+      </notifications-view>
+    </transition>
+  </div>
+</template>
+
+<script lang="ts">
+import 'eventsource-polyfill'
+import NotificationsView from '@/components/NotificationsView'
+import NotificationTopBar from '@/components/NotificationTopBar'
+
+import Notification from '../lib/Notification'
+import { SSEConnection, SSEEvent, SSEReadyStates } from './../lib/SSEConnection'
+import { mapActions, mapState } from 'vuex'
+import { mixin as clickaway } from 'vue-clickaway'
+import configUtils from '../lib/configUtils'
+
+declare var process : {
+  env: {
+    NODE_ENV: string,
+    SERVER_URL: string
+  }
+};
+
+export default {
+  name: 'raisetheapp',
+
+  components: {
+    NotificationsView,
+    NotificationTopBar
+  },
+
+  mixins: [
+    clickaway
+  ],
+
+  props: [
+    'configProp',
+    'serverUrl'
+  ],
+
+  computed: {
+    ...mapState('raiseTheApp', {
+      notifications: (state: any) => state.notifications
+    }),
+    sseServerUrl (): string {
+      return `${this.baseServerUrl}/${this.streamPath}`
+    }
+  },
+
+  data () {
+    return {
+      connection: null,
+      showNotifications: false,
+      // baseServerUrl: process.env.SERVER_URL,
+      baseServerUrl: this.serverUrl,
+      reconnectTimeout: 5000,
+      streamPath: 'subscribe'
+    }
+  },
+
+  created () {
+    this.startEvtSource();
+    window.addEventListener('keypress', (evt) => {
+      const key: number = evt.keyCode;
+      // Close notification dropdown on ESC keypress
+      if (key === 27 && this.showNotifications) {
+        this.closeDropdown();
+      }
+    });
+
+    if (this.config) { // override config if passed as a prop
+      configUtils.overrideConfig(this.config);
+    }
+  },
+
+  methods: {
+    ...mapActions('raiseTheApp', [
+      'addNotification'
+    ]),
+
+    closeDropdown (): void {
+      this.showNotifications = false;
+    },
+
+    startEvtSource (): void {
+      this.connection = new SSEConnection(this.sseServerUrl);
+      this.connection.on('notify', (evt: SSEEvent) => {
+        // console.log('Received notify event');
+        const notification: Notification = JSON.parse(evt.data);
+        this.addNotification(notification);
+      });
+      // Handles heartbeat event, sent from server every few seconds
+      // to keep the SSE connection alive for older browsers
+      // (see https://github.com/Yaffle/EventSource#server-side-requirements)
+      this.connection.on('heartbeat', (evt: SSEEvent) => {
+        // console.log('Heartbeat');
+      });
+      this.connection.onOpen((evt: SSEEvent) => {
+        // console.log('Connection open');
+        // console.log(this.connection.source.readyState);
+      });
+      this.connection.onError((evt: SSEEvent) => {
+        this.handleDisconnects();
+      });
+      this.connection.onClose((evt: SSEEvent) => {
+        this.stopEvtSource();
+      });
+
+      window.addEventListener('beforeunload', function (evt) {
+        this.stopEvtSource();
+      }.bind(this));
+    },
+
+    stopEvtSource (): void {
+      // console.log('Stopping evt source');
+      this.connection.close();
+    },
+
+    handleDisconnects (): void {
+      const readyState: number = this.connection.readyState;
+
+      // WORKAROUND: IE10 and FF try to reconnect only once,
+      // in that case the readyState is "CLOSED" => manually reconnect
+      if (readyState === SSEReadyStates.CLOSED) {
+        this.connection.close();
+        setTimeout(() => {
+          // console.log('Restarting');
+          this.startEvtSource(); // re-do everything
+        }, this.reconnectTimeout);
+      } else {
+        // console.log('Connection error. Retrying...');
+      }
+    },
+
+    toggleNotifications (): void {
+      this.showNotifications = !this.showNotifications;
+    }
+  }
+}
+</script>
+
+<style lang="scss" scoped>
+@import '../theme/raise-the-app.scss';
+
+.raisetheapp {
+  @include app;
+}
+
+.notifications-toggle {
+  @include notifications-toggle;
+}
+
+.toggle-enter-active, .toggle-leave-active {
+  @include toggle-animation-transition;
+}
+.toggle-enter, .toggle-leave-to {
+  @include toggle-animation-start;
+}
+
+</style>
