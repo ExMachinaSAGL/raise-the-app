@@ -5,8 +5,8 @@ export interface ConfigFile {
   showUnreadText: boolean;
   excerptSize: number;
   dynamicIconColor: boolean;
-  readParams?: [string];
-  deleteParams?: [string];
+  readParams?: string[];
+  deleteParams?: string[];
 }
 
 export interface PriorityLevel {
@@ -15,6 +15,8 @@ export interface PriorityLevel {
   backgroundColor: string,
   hoverColor: string
 }
+
+import Notification from './Notification'
 // config file for priority levels
 const configFile: ConfigFile = require('./../config/config.json');
 
@@ -44,13 +46,17 @@ const extractParams = (notification: Notification, paramsNames: [string]): strin
       params[paramName] = notification[paramName]
     }
   });
+  console.log('params', paramsNames, params);
   return paramsNames && paramsNames.length > 0 ? serializeParams(params) : '';
 };
 
 export default {
   config: configFile,
-  overrideConfig(configProp: ConfigFile) {
+  overrideConfig(configProp: ConfigFile): void {
     this.config = configProp;
+  },
+  restoreConfig(): void {
+    this.config = configFile
   },
   getLevel(priority: number): PriorityLevel {
     priority = priority || 0;
