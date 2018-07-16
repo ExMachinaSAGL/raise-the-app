@@ -1,7 +1,12 @@
 # RaiseTheApp
 
 ## Description
-RaiseTheApp is a configurable notification system that can be integrated as a module in a Vue.js web application.
+RaiseTheApp is a configurable notification system that can be integrated as a module in a Vue.js web application. It displays notifications that are published by the backend on a [server-sent-events](https://developer.mozilla.org/en-US/docs/Web/API/Server-sent_events) feed.
+
+<!-- ![The default notification dropdown](./docs/images/dropdown.png =250x10) -->
+<p align="center">
+  <img src="./docs/images/dropdown.png" alt="The default dropdown view" width="500px"/>
+</p>
 
 ## Run and build
 
@@ -32,7 +37,7 @@ Note that the repo/path must have a valid `package.json` in the root.
 "raisetheapp": "<repo_url.git> | file:<path to folder>",
 // ...
 ```
-Note: if the path is a git repository, the `dist` folder (i.e. the build output) must be committed.
+Note: if the path is a git repository, the `dist` folder (i.e. the build output) *must be committed*.
 
 #### External dependencies (i.e. not bundled in the module)
 - Vue
