@@ -47,7 +47,6 @@ const extractParams = (notification: Notification, paramsNames: [string]): strin
       params[paramName] = notification[paramName]
     }
   });
-  console.log('params', paramsNames, params);
   return paramsNames && paramsNames.length > 0 ? serializeParams(params) : '';
 };
 
