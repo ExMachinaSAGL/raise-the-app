@@ -1,7 +1,7 @@
 # RaiseTheApp
 
 ## Description
-RaiseTheApp is a configurable notification system that can be integrated as a module in a Vue.js web application. It displays notifications that are published by the backend on a [server-sent-events](https://developer.mozilla.org/en-US/docs/Web/API/Server-sent_events) feed.
+RaiseTheApp is a configurable notification system that can be integrated as a module in a Vue.js web application. It displays notifications that are published by the backend on a [server-sent-events](https://raw.githubusercontent.com/ExMachinaSAGL/raise-the-app/master/docs/images/dropdown.png) feed.
 
 <p align="center">
   <img src="./docs/images/dropdown.png" alt="The default dropdown view" width="500px"/>
