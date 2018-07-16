@@ -38,12 +38,12 @@ describe('NotificationItem.vue', () => {
   });
 
   it('should read a notification on click', async () => {
-    const notification: Notification = utils.generateNotification('Example Title', 'Example text', 0, 'broadcast');
+    const notification: Notification = utils.generateNotification('Example Title', 'Example text', 0);
     vm.$store.dispatch('raiseTheApp/addNotification', notification);
     vm.notification = notification;
     vm.baseServerUrl = 'http://localhost/test';
 
-    fetchMock.post(`${vm.baseServerUrl}/${notification.id}/read?type=broadcast`, 200);
+    fetchMock.post(`${vm.baseServerUrl}/${notification.id}/read`, 200);
     vm.readNotification();
 
     await Vue.nextTick();
@@ -52,17 +52,22 @@ describe('NotificationItem.vue', () => {
   });
 
   it('should delete a notification', async () => {
-    const notification: Notification = utils.generateNotification('Example Title', 'Example text', 0, 'broadcast');
+    const notification: Notification = utils.generateNotification('Example Title', 'Example text', 0);
+
+    expect(vm.$store.state.raiseTheApp.notifications.length).to.equal(0);
     vm.$store.dispatch('raiseTheApp/addNotification', notification);
+    expect(vm.$store.state.raiseTheApp.notifications.length).to.equal(1);
+    
     vm.notification = notification;
     vm.baseServerUrl = 'http://localhost/test';
     const spyRemove = sinon.spy(vm, 'deleteNotification');
 
-    fetchMock.post(`${vm.baseServerUrl}/${notification.id}/delete?type=broadcast`, 200);
+    fetchMock.post(`${vm.baseServerUrl}/${notification.id}/delete`, 200);
     vm.removeNotification();
 
     await Vue.nextTick();
     expect(spyRemove.called).to.equal(true);
+    expect(vm.$store.state.raiseTheApp.notifications.length).to.equal(0);
 
     fetchMock.restore();
   });

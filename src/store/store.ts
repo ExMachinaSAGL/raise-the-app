@@ -11,18 +11,28 @@ const state = {
 export const mutations = {
   addNotification (state: any, notification: Notification) {
     const exists = state.notifications.find(n => {
-      return n.id === notification.id && n.type === notification.type;
+      if (n.type) {
+        return n.id === notification.id && n.type === notification.type;
+      } else {
+        return n.id === notification.id;
+      }
     });
     if (!exists) { state.notifications.push(notification); }
   },
   deleteNotification (state: any, notification: Notification) {
+    console.log('deleting notification', state.notifications);
     state.notifications = state.notifications.filter(n => {
-      return `${n.id}|${n.type}` !== `${notification.id}|${notification.type}`; 
+      if (n.type) {
+        return `${n.id}|${n.type}` !== `${notification.id}|${notification.type}`; 
+      } else {
+        return n.id !== notification.id;
+      }
     });
   },
   markRead (state: any, notification: Notification) {
     state.notifications.forEach((n: Notification) => {
-      if (n.id === notification.id && n.type === notification.type) {
+      // match type only if exists
+      if (n.id === notification.id && (!n.type || n.type === notification.type)) {
         n.unread = false;
       }
     });

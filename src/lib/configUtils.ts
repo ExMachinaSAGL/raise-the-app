@@ -27,7 +27,8 @@ type paramType = 'read' | 'delete';
  * @param params query params structured as an object (i.e. key <-> value)
  */
 const serializeParams = (params: object): string => {
-  return '?' + Object.keys(params)
+  const questionMark: string = params && Object.keys(params).length > 0 ? '?' : '';
+  return questionMark + Object.keys(params)
     .map((key: string) => `${encodeURIComponent(key)}=${encodeURIComponent(params[key])}`)
     .join('&');
 };

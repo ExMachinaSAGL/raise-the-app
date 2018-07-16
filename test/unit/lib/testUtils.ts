@@ -5,7 +5,7 @@ import Vue from 'vue'
 import Vuex from 'vuex'
 
 export default {
-  generateNotification (title: string, text: string, priority: number, type: string): Notification {
+  generateNotification (title: string, text: string, priority: number, type?: string): Notification {
     let notification: Notification = {
       id: uuidv4(),
       unread: true,
