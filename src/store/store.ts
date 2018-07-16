@@ -20,7 +20,6 @@ export const mutations = {
     if (!exists) { state.notifications.push(notification); }
   },
   deleteNotification (state: any, notification: Notification) {
-    console.log('deleting notification', state.notifications);
     state.notifications = state.notifications.filter(n => {
       if (n.type) {
         return `${n.id}|${n.type}` !== `${notification.id}|${notification.type}`; 
