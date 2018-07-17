@@ -11,7 +11,7 @@
 
 <script lang="ts">
 import Notification from '../lib/Notification'
-import { mapState } from 'vuex'
+import { mapState, mapGetters } from 'vuex'
 import configUtils from '../lib/configUtils'
 
 export default {
@@ -21,18 +21,26 @@ export default {
     'showNotifications'
   ],
 
+  created () {
+    /**
+     * WORKAROUND: solves the issue of not always updating the unread count on
+     * notifications array mutation.
+     */
+    this.$store.subscribe((mutation, state) => {
+      const count: number = state.raiseTheApp.notifications
+        .filter((n: Notification) => {
+          return n.unread;
+        }).length;
+      this.unreadCount = count;
+    });
+  },
+
   computed: {
     ...mapState('raiseTheApp', {
       notifications: (state: any) => state.notifications
     }),
     unreadBadge (): number|string {
       return this.unreadCount > 99 ? `${99}+` : this.unreadCount;
-    },
-    unreadCount (): number {
-      const count: number = this.notifications.filter((n: Notification) => {
-        return n.unread;
-      }).length;
-      return count;
     },
     iconColor (): string {
       if (this.notifications.length > 0 && configUtils.config.dynamicIconColor) {
@@ -44,7 +52,8 @@ export default {
 
   data () {
     return {
-      emptyText: 'There are no unread notifications.'
+      emptyText: 'There are no unread notifications.',
+      unreadCount: 0
     }
   },
 

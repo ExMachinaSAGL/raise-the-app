@@ -8,6 +8,10 @@ const state = {
   notifications: []
 }
 
+const getters = {
+  getNotifications: state => state.notifications
+}
+
 export const mutations = {
   addNotification (state: any, notification: Notification) {
     const exists = state.notifications.find(n => {
@@ -17,7 +21,9 @@ export const mutations = {
         return n.id === notification.id;
       }
     });
-    if (!exists) { state.notifications.push(notification); }
+    if (!exists) { 
+      state.notifications.push(notification); 
+    }
   },
   deleteNotification (state: any, notification: Notification) {
     state.notifications = state.notifications.filter(n => {
@@ -73,6 +79,7 @@ export const actions = {
  */
 export const raiseTheAppModule = {
   namespaced: true,
+  getters,
   state,
   mutations,
   actions
