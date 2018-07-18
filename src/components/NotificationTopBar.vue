@@ -27,7 +27,6 @@ export default {
      * notifications array mutation.
      */
     this.$store.subscribe((mutation, state) => {
-      console.log('mutation', mutation);
       const count: number = state.raiseTheApp.notifications
         .filter((n: Notification) => {
           return n.unread;
