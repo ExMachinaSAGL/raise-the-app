@@ -38,6 +38,16 @@ export default {
     NotificationItem
   },
 
+  created () {
+    this.$store.subscribe((mutation, state) => {
+      if (mutation.type === 'raiseTheApp/deleteNotification') {
+        // refresh list view
+        console.log('forcing refresh on delete');
+        this.$forceUpdate();
+      }
+    });
+  },
+
   computed: {
     ...mapState('raiseTheApp', {
       notifications: (state: any) => state.notifications
