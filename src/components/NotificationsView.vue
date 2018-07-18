@@ -42,8 +42,10 @@ export default {
     this.$store.subscribe((mutation, state) => {
       if (mutation.type === 'raiseTheApp/deleteNotification') {
         // refresh list view
-        console.log('forcing refresh on delete');
-        this.$forceUpdate();
+        console.log('forcing refresh on delete (with nextTick)');
+        this.$nextTick(() => {
+          this.$forceUpdate();
+        })
       }
     });
   },
