@@ -97,7 +97,7 @@ export default {
   data () {
     return {
       emptyText: 'There are no unread notifications.',
-      notifications: []
+      notifications: this.$store.state.raiseTheApp.notifications
     }
   },
 
