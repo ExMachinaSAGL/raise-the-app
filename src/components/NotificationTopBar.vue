@@ -27,11 +27,18 @@ export default {
      * notifications array mutation.
      */
     this.$store.subscribe((mutation, state) => {
+      console.log('mutation', mutation);
       const count: number = state.raiseTheApp.notifications
         .filter((n: Notification) => {
           return n.unread;
         }).length;
       this.unreadCount = count;
+
+      if (mutation.type === 'raiseTheApp/deleteNotification') {
+        // refresh list view
+        console.log('forcing refresh on delete');
+        this.$forceUpdate();
+      }
     });
   },
 
