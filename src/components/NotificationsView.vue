@@ -14,7 +14,7 @@
     <transition-group name="list" tag="ul" class="notification-list">
       <notification-item
         ref="items"
-        v-for="notification in notifications"
+        v-for="notification in sortedNotifications"
         :base-server-url="baseServerUrl"
         :notification="notification"
         :key="notification.id">
