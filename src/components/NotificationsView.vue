@@ -1,7 +1,7 @@
 <template>
   <div class="notifications-view">
     <div class="notifications-view-header">
-      <div class="notifications-view-header-bulk-icons" v-if="$store.state.raiseTheApp.notifications && $store.state.raiseTheApp.notifications.length">
+      <div class="notifications-view-header-bulk-icons" v-if="notifications && notifications.length">
         <a href="#" title="Mark all as read" class="notifications-read-all" @click="readAll">
           <i class="fa fa-check-circle"></i>
         </a>
@@ -20,7 +20,7 @@
         :key="notification.id">
       </notification-item>
     </transition-group>
-    <div id="empty" class="list-empty" v-if="$store.state.raiseTheApp.notifications.length === 0">{{ emptyText }}</div>
+    <div id="empty" class="list-empty" v-if="notifications.length === 0">{{ emptyText }}</div>
   </div>
 </template>
 
@@ -39,31 +39,22 @@ export default {
   },
 
   created () {
+    /**
+     * Workaround for the issue of the notification list not correctly updating.
+     */
     this.$store.subscribe((mutation, state) => {
-      // console.log('updating notifications');
-      // this.notifications = state.raiseTheApp.notifications;
-      // if (mutation.type === 'raiseTheApp/deleteNotification') {
-      //   // refresh list view
-      //   console.log('forcing refresh on delete (with nextTick)');
-      //   this.$nextTick(() => {
-      //     this.$forceUpdate();
-      //   })
-      // }
+      this.notifications = state.raiseTheApp.notifications;
     });
   },
 
   computed: {
-    // ...mapState('raiseTheApp', {
-    //   notifications: (state: any) => state.notifications
-    // }),
     sortedNotifications (): Notification[] {
-      console.log('computing sorted notifications');
-      return this.$store.state.raiseTheApp.notifications.slice().sort((a: Notification, b: Notification) => {
+      return this.notifications.slice().sort((a: Notification, b: Notification) => {
         return new Date(b.creationTime).getTime() - new Date(a.creationTime).getTime();
       });
     },
     unreadCount (): number {
-      const count: number = this.$store.state.raiseTheApp.notifications.filter((n: Notification) => {
+      const count: number = this.notifications.filter((n: Notification) => {
         return n.unread;
       }).length;
       return count;
@@ -75,7 +66,7 @@ export default {
       const count: number = this.unreadCount;
       const plural: string = (count > 1) ? 's' : '';
 
-      const importantCount: number = this.$store.state.raiseTheApp.notifications.filter((n: Notification) => {
+      const importantCount: number = this.notifications.filter((n: Notification) => {
         const maxLength = configUtils.config.levels.length - 1;
         return (n.priority === maxLength) && n.unread;
       }).length;
@@ -96,8 +87,8 @@ export default {
 
   data () {
     return {
-      emptyText: 'There are no unread notifications.'
-      // notifications: this.$store.state.raiseTheApp.notifications
+      emptyText: 'There are no unread notifications.',
+      notifications: this.$store.state.raiseTheApp.notifications
     }
   },
 
