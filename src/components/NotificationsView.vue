@@ -14,7 +14,7 @@
     <transition-group name="list" tag="ul" class="notification-list">
       <notification-item
         ref="items"
-        v-for="notification in sortedNotifications"
+        v-for="notification in notifications"
         :base-server-url="baseServerUrl"
         :notification="notification"
         :key="notification.id">
@@ -55,6 +55,7 @@ export default {
       notifications: (state: any) => state.notifications
     }),
     sortedNotifications (): Notification[] {
+      console.log('computing sorted notifications');
       return this.notifications.slice().sort((a: Notification, b: Notification) => {
         return new Date(b.creationTime).getTime() - new Date(a.creationTime).getTime();
       });
