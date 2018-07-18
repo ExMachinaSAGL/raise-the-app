@@ -22,15 +22,15 @@ export const mutations = {
       }
     });
     if (!exists) { 
-      console.log('not exists -> pushing', notification);
+      console.log('not exists -> pushing', state.notifications, JSON.stringify(state.notifications));
       state.notifications.push(notification);
-      console.log('pushed new notification', state);
+      console.log('pushed new notification', state.notifications, JSON.stringify(state.notifications));
     } else {
       console.log('notification already exists');
     }
   },
   deleteNotification (state: any, notification: Notification) {
-    console.log('before delete', state.notifications);
+    console.log('before delete', state.notifications, JSON.stringify(state.notifications));
     state.notifications = state.notifications.filter(n => {
       if (n.type) {
         return `${n.id}|${n.type}` !== `${notification.id}|${notification.type}`; 
