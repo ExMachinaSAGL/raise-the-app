@@ -1,7 +1,7 @@
 <template>
   <div class="notifications-view">
     <div class="notifications-view-header">
-      <div class="notifications-view-header-bulk-icons" v-if="notifications && notifications.length">
+      <div class="notifications-view-header-bulk-icons" v-if="$store.state.raiseTheApp.notifications && $store.state.raiseTheApp.notifications.length">
         <a href="#" title="Mark all as read" class="notifications-read-all" @click="readAll">
           <i class="fa fa-check-circle"></i>
         </a>
@@ -20,7 +20,7 @@
         :key="notification.id">
       </notification-item>
     </transition-group>
-    <div id="empty" class="list-empty" v-if="notifications.length === 0">{{ emptyText }}</div>
+    <div id="empty" class="list-empty" v-if="$store.state.raiseTheApp.notifications.length === 0">{{ emptyText }}</div>
   </div>
 </template>
 
