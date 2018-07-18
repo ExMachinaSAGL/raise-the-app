@@ -14,7 +14,7 @@
     <transition-group name="list" tag="ul" class="notification-list">
       <notification-item
         ref="items"
-        v-for="notification in notifications"
+        v-for="notification in sortedNotifications"
         :base-server-url="baseServerUrl"
         :notification="notification"
         :key="notification.id">
@@ -40,8 +40,8 @@ export default {
 
   created () {
     this.$store.subscribe((mutation, state) => {
-      console.log('updating notifications');
-      this.notifications = state.raiseTheApp.notifications;
+      // console.log('updating notifications');
+      // this.notifications = state.raiseTheApp.notifications;
       // if (mutation.type === 'raiseTheApp/deleteNotification') {
       //   // refresh list view
       //   console.log('forcing refresh on delete (with nextTick)');
@@ -56,14 +56,14 @@ export default {
     // ...mapState('raiseTheApp', {
     //   notifications: (state: any) => state.notifications
     // }),
-    // sortedNotifications (): Notification[] {
-    //   console.log('computing sorted notifications');
-    //   return this.notifications.slice().sort((a: Notification, b: Notification) => {
-    //     return new Date(b.creationTime).getTime() - new Date(a.creationTime).getTime();
-    //   });
-    // },
+    sortedNotifications (): Notification[] {
+      console.log('computing sorted notifications');
+      return this.$store.state.raiseTheApp.notifications.slice().sort((a: Notification, b: Notification) => {
+        return new Date(b.creationTime).getTime() - new Date(a.creationTime).getTime();
+      });
+    },
     unreadCount (): number {
-      const count: number = this.notifications.filter((n: Notification) => {
+      const count: number = this.$store.state.raiseTheApp.notifications.filter((n: Notification) => {
         return n.unread;
       }).length;
       return count;
@@ -75,7 +75,7 @@ export default {
       const count: number = this.unreadCount;
       const plural: string = (count > 1) ? 's' : '';
 
-      const importantCount: number = this.notifications.filter((n: Notification) => {
+      const importantCount: number = this.$store.state.raiseTheApp.notifications.filter((n: Notification) => {
         const maxLength = configUtils.config.levels.length - 1;
         return (n.priority === maxLength) && n.unread;
       }).length;
@@ -96,8 +96,8 @@ export default {
 
   data () {
     return {
-      emptyText: 'There are no unread notifications.',
-      notifications: this.$store.state.raiseTheApp.notifications
+      emptyText: 'There are no unread notifications.'
+      // notifications: this.$store.state.raiseTheApp.notifications
     }
   },
 
