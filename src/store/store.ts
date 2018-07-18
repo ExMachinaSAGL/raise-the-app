@@ -22,15 +22,10 @@ export const mutations = {
       }
     });
     if (!exists) { 
-      console.log('not exists -> pushing', state.notifications, JSON.stringify(state.notifications));
       state.notifications.push(notification);
-      console.log('pushed new notification', state.notifications, JSON.stringify(state.notifications));
-    } else {
-      console.log('notification already exists');
     }
   },
   deleteNotification (state: any, notification: Notification) {
-    console.log('before delete', state.notifications, JSON.stringify(state.notifications));
     state.notifications = state.notifications.filter(n => {
       if (n.type) {
         return `${n.id}|${n.type}` !== `${notification.id}|${notification.type}`; 
@@ -38,7 +33,6 @@ export const mutations = {
         return n.id !== notification.id;
       }
     });
-    console.log('after delete', state.notifications);
   },
   markRead (state: any, notification: Notification) {
     state.notifications.forEach((n: Notification) => {

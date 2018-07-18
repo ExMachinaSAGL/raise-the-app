@@ -14,7 +14,7 @@
     <transition-group name="list" tag="ul" class="notification-list">
       <notification-item
         ref="items"
-        v-for="notification in sortedNotifications"
+        v-for="notification in notifications"
         :base-server-url="baseServerUrl"
         :notification="notification"
         :key="notification.id">
@@ -40,26 +40,28 @@ export default {
 
   created () {
     this.$store.subscribe((mutation, state) => {
-      if (mutation.type === 'raiseTheApp/deleteNotification') {
-        // refresh list view
-        console.log('forcing refresh on delete (with nextTick)');
-        this.$nextTick(() => {
-          this.$forceUpdate();
-        })
-      }
+      console.log('updating notifications');
+      this.notifications = state.raiseTheApp.notifications;
+      // if (mutation.type === 'raiseTheApp/deleteNotification') {
+      //   // refresh list view
+      //   console.log('forcing refresh on delete (with nextTick)');
+      //   this.$nextTick(() => {
+      //     this.$forceUpdate();
+      //   })
+      // }
     });
   },
 
   computed: {
-    ...mapState('raiseTheApp', {
-      notifications: (state: any) => state.notifications
-    }),
-    sortedNotifications (): Notification[] {
-      console.log('computing sorted notifications');
-      return this.notifications.slice().sort((a: Notification, b: Notification) => {
-        return new Date(b.creationTime).getTime() - new Date(a.creationTime).getTime();
-      });
-    },
+    // ...mapState('raiseTheApp', {
+    //   notifications: (state: any) => state.notifications
+    // }),
+    // sortedNotifications (): Notification[] {
+    //   console.log('computing sorted notifications');
+    //   return this.notifications.slice().sort((a: Notification, b: Notification) => {
+    //     return new Date(b.creationTime).getTime() - new Date(a.creationTime).getTime();
+    //   });
+    // },
     unreadCount (): number {
       const count: number = this.notifications.filter((n: Notification) => {
         return n.unread;
@@ -94,7 +96,8 @@ export default {
 
   data () {
     return {
-      emptyText: 'There are no unread notifications.'
+      emptyText: 'There are no unread notifications.',
+      notifications: []
     }
   },
 
