@@ -34,7 +34,6 @@ export default Vue.extend({
           return n.unread;
         }).length;
       this.unreadCount = count;
-      console.log('mutation');
     });
   },
 

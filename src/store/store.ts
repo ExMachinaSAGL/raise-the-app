@@ -1,7 +1,7 @@
 import Vue from 'vue'
 import Vuex, { StoreOptions, GetterTree, MutationTree, ActionTree, ModuleTree, Module } from 'vuex'
 import Notification from '../lib/Notification'
-console.log('vue', Vue);
+
 Vue.use(Vuex);
 
 export interface State {
