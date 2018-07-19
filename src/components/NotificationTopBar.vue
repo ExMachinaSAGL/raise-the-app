@@ -41,7 +41,7 @@ export default Vue.extend({
     notifications () {
       return store.state.notifications;
     },
-    // Vuex helpers do not work with TypeScript type check, 
+    // Vuex helpers do not work with TypeScript type check,
     // since their props do not get recognised as part of the Vue component
     // ...mapState('raiseTheApp', {
     //   notifications: (state: any) => state.notifications

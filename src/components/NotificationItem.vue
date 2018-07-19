@@ -103,7 +103,7 @@ export default Vue.extend({
     deleteNotification (n: Notification) {
       store.dispatch('deleteNotification', n);
     },
-    // Vuex helpers do not work with TypeScript type check, 
+    // Vuex helpers do not work with TypeScript type check,
     // since their props do not get recognised as part of the Vue component
     // ...mapActions('raiseTheApp', [
     //   'markRead',
