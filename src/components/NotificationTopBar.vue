@@ -28,14 +28,14 @@ export default Vue.extend({
      * WORKAROUND: solves the issue of not always updating the unread count on
      * notifications array mutation.
      */
-    // store.subscribe((mutation, state) => {
-    //   const count: number = state.raiseTheApp.notifications
-    //     .filter((n: Notification) => {
-    //       return n.unread;
-    //     }).length;
-    //   this.unreadCount = count;
-    //   console.log('mutation', mutation, state.raiseTheApp.notifications, this.unreadCount);
-    // });
+    store.subscribe((mutation, state) => {
+      // const count: number = state.raiseTheApp.notifications
+      //   .filter((n: Notification) => {
+      //     return n.unread;
+      //   }).length;
+      // this.unreadCount = count;
+      console.log('mutation', mutation, state.raiseTheApp.notifications, this.unreadCount);
+    });
   },
 
   computed: {
