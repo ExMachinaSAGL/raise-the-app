@@ -1,6 +1,6 @@
 {
   "name": "raisetheapp",
-  "version": "1.0.23-2",
+  "version": "1.0.23-3",
   "description": "A configurable notification system that can be integrated as a module in a Vue.js web application.",
   "author": "ExMachina SAGL <raisetheapp@exmachina.ch>",
   "homepage": "https://github.com/ExMachinaSAGL/raise-the-app",
