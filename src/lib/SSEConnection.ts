@@ -15,9 +15,13 @@ export const SSEReadyStates = {
   CLOSED: 2
 };
 
+declare var window : any;
+
 export class SSEConnection {
   source: any;
-  listeners: Object;
+  listeners: {
+    [key: string ]: (evt: SSEEvent) => void
+  };
 
   constructor (url: string) {
     this.source = new window['EventSource'](url, {withCredentials: true});

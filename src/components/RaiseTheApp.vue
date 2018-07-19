@@ -16,14 +16,16 @@
 
 <script lang="ts">
 import 'eventsource-polyfill'
-import NotificationsView from '@/components/NotificationsView'
-import NotificationTopBar from '@/components/NotificationTopBar'
+import NotificationsView from './NotificationsView.vue'
+import NotificationTopBar from './NotificationTopBar.vue'
 
 import Notification from '../lib/Notification'
 import { SSEConnection, SSEEvent, SSEReadyStates } from './../lib/SSEConnection'
 import { mapActions, mapState } from 'vuex'
 import { mixin as clickaway } from 'vue-clickaway'
 import configUtils from '../lib/configUtils'
+import Vue from 'vue';
+import store from '../store/store';
 
 declare var process : {
   env: {
@@ -32,7 +34,7 @@ declare var process : {
   }
 };
 
-export default {
+export default Vue.extend({
   name: 'raisetheapp',
 
   components: {
@@ -58,7 +60,13 @@ export default {
     }
   },
 
-  data () {
+  data () : {
+    connection: SSEConnection | null,
+    showNotifications: boolean,
+    baseServerUrl: string | null,
+    reconnectTimeout: number,
+    streamPath: string
+    } {
     return {
       connection: null,
       showNotifications: false,
@@ -79,15 +87,20 @@ export default {
       }
     });
 
-    if (this.config) { // override config if passed as a prop
-      configUtils.overrideConfig(this.config);
+    if (this.configProp) { // override config if passed as a prop
+      configUtils.overrideConfig(this.configProp);
     }
   },
 
   methods: {
-    ...mapActions('raiseTheApp', [
-      'addNotification'
-    ]),
+    addNotification (n : Notification) {
+      store.dispatch('addNotification', n);
+    },
+    // Vuex helpers do not work with TypeScript type check, 
+    // since their props do not get recognised as part of the Vue component
+    // ...mapActions('raiseTheApp', [
+    //   'addNotification'
+    // ]),
 
     closeDropdown (): void {
       this.showNotifications = false;
@@ -117,29 +130,33 @@ export default {
         this.stopEvtSource();
       });
 
-      window.addEventListener('beforeunload', function (evt) {
+      window.addEventListener('beforeunload', (evt: any) => {
         this.stopEvtSource();
-      }.bind(this));
+      });
     },
 
     stopEvtSource (): void {
       // console.log('Stopping evt source');
-      this.connection.close();
+      if (this.connection) {
+        this.connection.close();
+      }
     },
 
     handleDisconnects (): void {
-      const readyState: number = this.connection.readyState;
+      if (this.connection) {
+        const readyState: number = this.connection.readyState;
 
-      // WORKAROUND: IE10 and FF try to reconnect only once,
-      // in that case the readyState is "CLOSED" => manually reconnect
-      if (readyState === SSEReadyStates.CLOSED) {
-        this.connection.close();
-        setTimeout(() => {
-          // console.log('Restarting');
-          this.startEvtSource(); // re-do everything
-        }, this.reconnectTimeout);
-      } else {
-        // console.log('Connection error. Retrying...');
+        // WORKAROUND: IE10 and FF try to reconnect only once,
+        // in that case the readyState is "CLOSED" => manually reconnect
+        if (readyState === SSEReadyStates.CLOSED) {
+          this.connection.close();
+          setTimeout(() => {
+            // console.log('Restarting');
+            this.startEvtSource(); // re-do everything
+          }, this.reconnectTimeout);
+        } else {
+          // console.log('Connection error. Retrying...');
+        }
       }
     },
 
@@ -147,7 +164,7 @@ export default {
       this.showNotifications = !this.showNotifications;
     }
   }
-}
+})
 </script>
 
 <style lang="scss" scoped>

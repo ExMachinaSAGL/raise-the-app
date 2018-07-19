@@ -28,10 +28,12 @@
 import 'whatwg-fetch'
 import Notification from '../lib/Notification'
 import { mapState, mapActions } from 'vuex'
-import NotificationItem from '@/components/NotificationItem'
+import NotificationItem from '@/components/NotificationItem.vue'
 import configUtils from '../lib/configUtils'
+import Vue from 'vue';
+import store from '@/store/store';
 
-export default {
+export default Vue.extend({
   name: 'notifications-view',
 
   components: {
@@ -93,10 +95,18 @@ export default {
   },
 
   methods: {
-    ...mapActions('raiseTheApp', [
-      'markAllRead',
-      'deleteAll'
-    ]),
+    markAllRead () {
+      store.dispatch('markAllRead');
+    },
+    deleteAll () {
+      store.dispatch('deleteAll');
+    },
+    // Vuex helpers do not work with TypeScript type check, 
+    // since their props do not get recognised as part of the Vue component
+    // ...mapActions('raiseTheApp', [
+    //   'markAllRead',
+    //   'deleteAll'
+    // ]),
 
     readAll (): void {
       fetch(`${this.baseServerUrl}/readAll`, {
@@ -120,7 +130,7 @@ export default {
       })
     }
   }
-}
+})
 </script>
 
 <style lang="scss">

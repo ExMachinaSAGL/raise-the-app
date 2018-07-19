@@ -1,20 +1,26 @@
 import Vue from 'vue'
-import Vuex from 'vuex'
+import Vuex, { StoreOptions, GetterTree, MutationTree, ActionTree, ModuleTree } from 'vuex'
 import Notification from '../lib/Notification'
 
 Vue.use(Vuex);
 
-const state = {
+interface State {
+  notifications: Notification[];
+}
+
+interface RootState {} // GetterTree requires two type arguments for some reason
+
+const state: State = {
   notifications: []
 }
 
-const getters = {
-  getNotifications: state => state.notifications
+const getters: GetterTree<State, RootState> = {
+  getNotifications: (state: State) => state.notifications
 }
 
-export const mutations = {
-  addNotification (state: any, notification: Notification) {
-    const exists = state.notifications.find(n => {
+export const mutations: MutationTree<State> = {
+  addNotification (state: State, notification: Notification): void {
+    const exists = state.notifications.find((n: Notification) => {
       if (n.type) {
         return n.id === notification.id && n.type === notification.type;
       } else {
@@ -25,8 +31,8 @@ export const mutations = {
       state.notifications.push(notification);
     }
   },
-  deleteNotification (state: any, notification: Notification) {
-    state.notifications = state.notifications.filter(n => {
+  deleteNotification (state: State, notification: Notification): void {
+    state.notifications = state.notifications.filter((n: Notification) => {
       if (n.type) {
         return `${n.id}|${n.type}` !== `${notification.id}|${notification.type}`; 
       } else {
@@ -34,7 +40,7 @@ export const mutations = {
       }
     });
   },
-  markRead (state: any, notification: Notification) {
+  markRead (state: State, notification: Notification): void {
     state.notifications.forEach((n: Notification) => {
       // match type only if exists
       if (n.id === notification.id && (!n.type || n.type === notification.type)) {
@@ -42,34 +48,34 @@ export const mutations = {
       }
     });
   },
-  markAllRead (state: any) {
+  markAllRead (state: State): void {
     state.notifications.forEach((notification: Notification) => {
       notification.unread = false;
     });
   },
-  deleteAll (state: any) {
+  deleteAll (state: State): void {
     state.notifications = [];
   }
 }
 
-export const actions = {
-  addNotification ({ commit }, notification: Notification) {
+export const actions: ActionTree<State, RootState> = {
+  addNotification ({ commit }: any, notification: Notification): void {
     commit('addNotification', notification);
   },
 
-  deleteNotification ({ commit }, notification: Notification) {
+  deleteNotification ({ commit }: any, notification: Notification): void {
     commit('deleteNotification', notification);
   },
 
-  markRead ({ commit }, notification: Notification) {
+  markRead ({ commit }: any, notification: Notification): void {
     commit('markRead', notification);
   },
 
-  markAllRead ({ commit }) {
+  markAllRead ({ commit }: any): void {
     commit('markAllRead');
   },
 
-  deleteAll ({ commit }) {
+  deleteAll ({ commit }: any): void {
     commit('deleteAll');
   }
 }
@@ -85,10 +91,12 @@ export const raiseTheAppModule = {
   actions
 }
 
-export const options = {
-  modules: {
-    raiseTheApp: raiseTheAppModule
-  }
+const modules: ModuleTree<State> = {
+  raiseTheApp: raiseTheAppModule
+}
+
+export const options: StoreOptions<State> = {
+  modules
 }
 
 export default new Vuex.Store(options)

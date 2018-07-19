@@ -33,8 +33,10 @@ import Notification from '../lib/Notification'
 import configUtils from '../lib/configUtils'
 import linkifyHtml from 'linkifyjs/html'
 import { mapActions, mapState } from 'vuex'
+import Vue, {VueConstructor} from 'vue';
+import store from '@/store/store';
 
-export default {
+export default Vue.extend({
   name: 'notification-item',
 
   props: {
@@ -53,12 +55,14 @@ export default {
         const priority: number = this.notification.priority;
         return configUtils.getLevel(priority).icon;
       }
+      return '';
     },
     iconColor (): string {
       if (this.notification) {
         const priority: number = this.notification.priority;
         return configUtils.getIconColor(priority);
       }
+      return '';
     },
     backgroundColor (): string {
       if (this.notification) {
@@ -67,6 +71,7 @@ export default {
         const hover: string = configUtils.getLevel(priority).hoverColor;
         return this.hovered || !this.notification.unread ? hover : background;
       }
+      return '';
     },
     excerpt (): string {
       if (this.notification) {
@@ -92,10 +97,18 @@ export default {
   },
 
   methods: {
-    ...mapActions('raiseTheApp', [
-      'markRead',
-      'deleteNotification'
-    ]),
+    markRead (n: Notification) {
+      store.dispatch('markRead', n);
+    },
+    deleteNotification (n: Notification) {
+      store.dispatch('deleteNotification', n);
+    },
+    // Vuex helpers do not work with TypeScript type check, 
+    // since their props do not get recognised as part of the Vue component
+    // ...mapActions('raiseTheApp', [
+    //   'markRead',
+    //   'deleteNotification'
+    // ]),
     readNotification (): void {
       if (!this.notification.unread) return;
       const url = `${this.baseServerUrl}/${this.notification.id}/read${configUtils.getParams(this.notification, 'read')}`;
@@ -118,7 +131,7 @@ export default {
       this.expanded = !this.expanded;
     }
   }
-}
+})
 </script>
 
 <style lang="scss">

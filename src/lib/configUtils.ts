@@ -26,7 +26,7 @@ type paramType = 'read' | 'delete';
  * Converts the given query params into an URI string (i.e. `?key=value&key2=value2&...`)
  * @param params query params structured as an object (i.e. key <-> value)
  */
-const serializeParams = (params: object): string => {
+const serializeParams = (params: any): string => {
   const questionMark: string = params && Object.keys(params).length > 0 ? '?' : '';
   return questionMark + Object.keys(params)
     .map((key: string) => `${encodeURIComponent(key)}=${encodeURIComponent(params[key])}`)
@@ -38,8 +38,8 @@ const serializeParams = (params: object): string => {
  * @param notification the current notification
  * @param paramsNames list of parameter names (they must be properties of the Notification interface)
  */
-const extractParams = (notification: Notification, paramsNames: [string]): string => {
-  const params = {};
+const extractParams = (notification: any, paramsNames: string[] | undefined): string => {
+  const params: { [key: string]: string } = {};
   if (!notification || !paramsNames) return '';
 
   paramsNames.forEach((paramName: string) => {

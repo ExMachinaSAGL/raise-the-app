@@ -13,8 +13,10 @@
 import Notification from '../lib/Notification'
 import { mapState, mapGetters } from 'vuex'
 import configUtils from '../lib/configUtils'
+import Vue from 'vue';
+import store from '../store/store'
 
-export default {
+export default Vue.extend({
   name: 'notification-top-bar',
 
   props: [
@@ -36,9 +38,14 @@ export default {
   },
 
   computed: {
-    ...mapState('raiseTheApp', {
-      notifications: (state: any) => state.notifications
-    }),
+    notifications () {
+      return store.state.notifications;
+    },
+    // Vuex helpers do not work with TypeScript type check, 
+    // since their props do not get recognised as part of the Vue component
+    // ...mapState('raiseTheApp', {
+    //   notifications: (state: any) => state.notifications
+    // }),
     unreadBadge (): number|string {
       return this.unreadCount > 99 ? `${99}+` : this.unreadCount;
     },
@@ -47,6 +54,7 @@ export default {
         const top: Notification = this.mostImportantNotification();
         return configUtils.getLevel(top.priority).color;
       }
+      return '';
     }
   },
 
@@ -67,7 +75,7 @@ export default {
       });
     }
   }
-}
+})
 </script>
 
 <style lang="scss" scoped>
