@@ -29,12 +29,11 @@ export default Vue.extend({
      * notifications array mutation.
      */
     store.subscribe((mutation, state) => {
-      // const count: number = state.raiseTheApp.notifications
-      //   .filter((n: Notification) => {
-      //     return n.unread;
-      //   }).length;
-      // this.unreadCount = count;
-      console.log('mutation', mutation, state.raiseTheApp.notifications, this.unreadCount);
+      const count: number = state.raiseTheApp.notifications
+        .filter((n: Notification) => {
+          return n.unread;
+        }).length;
+      this.unreadCount = count;
     });
   },
 
