@@ -1,8 +1,8 @@
 import * as uuidv4 from 'uuid/v4'
 import Notification from '../../../src/lib/Notification'
-import { options } from '../../../src/store/store'
-import Vue from 'vue'
-import Vuex from 'vuex'
+import { options, State, RootState } from '../../../src/store/store'
+import Vue, { VueConstructor } from 'vue'
+import Vuex, { MutationTree, ActionTree } from 'vuex'
 
 export default {
   generateNotification (title: string, text: string, priority: number, type?: string): Notification {
@@ -18,28 +18,34 @@ export default {
     return notification;
   },
 
-  getElement(vm: any, selector: string): Element {
+  getElement(vm: Vue, selector: string): Element {
     return vm.$el.querySelector(selector);
   },
 
-  setupVue (module: any): any {
+  setupVue (module: VueConstructor): any {
     const testActions = {
-      resetStore ({ commit }) {
+      resetStore ({ commit }: any) {
         commit('reset');
       }
-    }
-    Object.assign(options.modules.raiseTheApp.actions, testActions);
-
+    };
     const testMutations = {
       reset (state) {
         state.notifications = [];
       }
+    };
+    if (options && options.modules && options.modules.raiseTheApp) {
+      // const storeActions: any = options.modules.raiseTheApp.actions;
+      Object.assign(options.modules.raiseTheApp.actions, testActions);
+  
+      // const storeMutations: any = options.modules.raiseTheApp.mutations;
+      Object.assign(options.modules.raiseTheApp.mutations, testMutations);
+      const mockStore = new Vuex.Store(options);
+      // console.log('store stuff', options.modules);
+      const Constructor = module.extend({store: mockStore});
+      // console.log('constructor', Constructor);
+      return new Constructor().$mount();
     }
-    Object.assign(options.modules.raiseTheApp.mutations, testMutations);
 
-    const mockStore = new Vuex.Store(options);
-    const Constructor = Vue.extend({...module, store: mockStore});
-    return new Constructor().$mount();
   },
 
   tearDownVue (vm: any): void {

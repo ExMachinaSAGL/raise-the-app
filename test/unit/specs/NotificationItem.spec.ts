@@ -2,7 +2,7 @@ import 'eventsource-polyfill'
 import 'whatwg-fetch'
 import 'babel-polyfill'
 import Vue from 'vue'
-import NotificationItem from '@/components/NotificationItem'
+import NotificationItem from '../../../src/components/NotificationItem.vue'
 import { expect } from 'chai';
 import sinon, { SinonStub } from 'sinon'
 import fetchMock from 'fetch-mock'
@@ -30,6 +30,7 @@ describe('NotificationItem.vue', () => {
       'deleteParams': ['type']
     };
     configUtils.overrideConfig(mockConfig);
+    console.log('NotificationItem', NotificationItem);
     vm = utils.setupVue(NotificationItem);
   });
 

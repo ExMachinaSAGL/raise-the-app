@@ -1,5 +1,5 @@
 import Vue from 'vue'
-import NotificationTopBar from '@/components/NotificationTopBar'
+import NotificationTopBar from '@/components/NotificationTopBar.vue'
 import { expect } from 'chai';
 import sinon, { SinonStub } from 'sinon'
 import Notification from '../../../src/lib/Notification'
@@ -29,6 +29,7 @@ describe('NotificationTopBar.vue', () => {
     
     const stub: SinonStub = sinon.stub(vm, 'showNotifications').value(true);
     pushNotificationBatch(vm.$store, 10);
+    console.log('vm store', vm.$store.state.raiseTheApp.notifications);
     
     await Vue.nextTick();
     expect(vm.unreadCount).to.equal(10);

@@ -94,7 +94,7 @@ export default Vue.extend({
 
   methods: {
     addNotification (n : Notification) {
-      store.dispatch('addNotification', n);
+      store.dispatch('raiseTheApp/addNotification', n);
     },
     // Vuex helpers do not work with TypeScript type check,
     // since their props do not get recognised as part of the Vue component

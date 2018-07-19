@@ -44,7 +44,7 @@ export default Vue.extend({
     /**
      * Workaround for the issue of the notification list not correctly updating.
      */
-    this.$store.subscribe((mutation, state) => {
+    store.subscribe((mutation, state) => {
       this.notifications = state.raiseTheApp.notifications;
     });
   },
@@ -90,16 +90,16 @@ export default Vue.extend({
   data () {
     return {
       emptyText: 'There are no unread notifications.',
-      notifications: this.$store.state.raiseTheApp.notifications
+      notifications: store.state.raiseTheApp.notifications
     }
   },
 
   methods: {
     markAllRead () {
-      store.dispatch('markAllRead');
+      store.dispatch('raiseTheApp/markAllRead');
     },
     deleteAll () {
-      store.dispatch('deleteAll');
+      store.dispatch('raiseTheApp/deleteAll');
     },
     // Vuex helpers do not work with TypeScript type check,
     // since their props do not get recognised as part of the Vue component

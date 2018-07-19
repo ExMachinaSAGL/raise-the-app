@@ -4,9 +4,9 @@
     "target": "es5",
     "module": "es2015",
     "moduleResolution": "node",
-    "sourceMap": true,
+    "sourceMap": false,
     "allowSyntheticDefaultImports": true,
-    "strict": true,
+    "strict": false,
     "baseUrl": ".",
     "paths": {
       "@/*": [

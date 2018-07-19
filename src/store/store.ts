@@ -1,14 +1,16 @@
 import Vue from 'vue'
-import Vuex, { StoreOptions, GetterTree, MutationTree, ActionTree, ModuleTree } from 'vuex'
+import Vuex, { StoreOptions, GetterTree, MutationTree, ActionTree, ModuleTree, Module } from 'vuex'
 import Notification from '../lib/Notification'
 
 Vue.use(Vuex);
 
-interface State {
-  notifications: Notification[];
+export interface State {
+  notifications: Notification[]
 }
 
-interface RootState {} // GetterTree requires two type arguments for some reason
+export interface RootState {
+  raiseTheApp: State;
+}
 
 const state: State = {
   notifications: []
@@ -83,7 +85,7 @@ export const actions: ActionTree<State, RootState> = {
 /**
  * Defined as a module so that it can be imported into other Vuex stores.
  */
-export const raiseTheAppModule = {
+export const raiseTheAppModule: Module<State, RootState> = {
   namespaced: true,
   getters,
   state,
@@ -91,11 +93,11 @@ export const raiseTheAppModule = {
   actions
 }
 
-const modules: ModuleTree<State> = {
+const modules: ModuleTree<RootState> = {
   raiseTheApp: raiseTheAppModule
 }
 
-export const options: StoreOptions<State> = {
+export const options: StoreOptions<RootState> = {
   modules
 }
 

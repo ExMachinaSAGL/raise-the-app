@@ -98,10 +98,10 @@ export default Vue.extend({
 
   methods: {
     markRead (n: Notification) {
-      store.dispatch('markRead', n);
+      store.dispatch('raiseTheApp/markRead', n);
     },
     deleteNotification (n: Notification) {
-      store.dispatch('deleteNotification', n);
+      store.dispatch('raiseTheApp/deleteNotification', n);
     },
     // Vuex helpers do not work with TypeScript type check,
     // since their props do not get recognised as part of the Vue component
