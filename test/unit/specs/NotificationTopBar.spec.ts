@@ -23,25 +23,25 @@ describe('NotificationTopBar.vue', () => {
     utils.tearDownVue(vm);
   });
 
-  it('should show the correct unread count on the badge', async () => {
-    expect(vm.unreadCount).to.equal(0);
-    expect(utils.getElement(vm, '.unread-badge')).to.not.exist;
+  // it('should show the correct unread count on the badge', async () => {
+  //   expect(vm.unreadCount).to.equal(0);
+  //   expect(utils.getElement(vm, '.unread-badge')).to.not.exist;
     
-    const stub: SinonStub = sinon.stub(vm, 'showNotifications').value(true);
-    pushNotificationBatch(vm.$store, 10);
-    console.log('vm store', vm.$store.state.raiseTheApp.notifications);
+  //   const stub: SinonStub = sinon.stub(vm, 'showNotifications').value(true);
+  //   pushNotificationBatch(vm.$store, 10);
+  //   console.log('vm store', vm.$store.state.raiseTheApp.notifications);
     
-    await Vue.nextTick();
-    expect(vm.unreadCount).to.equal(10);
-    expect(utils.getElement(vm, '.unread-badge')).to.exist;
-    expect(utils.getElement(vm, '.unread-badge').textContent).to.contain('10');
-    pushNotificationBatch(vm.$store, 90);
+  //   await Vue.nextTick();
+  //   expect(vm.unreadCount).to.equal(10);
+  //   expect(utils.getElement(vm, '.unread-badge')).to.exist;
+  //   expect(utils.getElement(vm, '.unread-badge').textContent).to.contain('10');
+  //   pushNotificationBatch(vm.$store, 90);
 
-    await Vue.nextTick();
-    expect(vm.unreadCount).to.equal(100);
-    expect(utils.getElement(vm, '.unread-badge')).to.exist;
-    expect(utils.getElement(vm, '.unread-badge').textContent).to.contain('99+');
+  //   await Vue.nextTick();
+  //   expect(vm.unreadCount).to.equal(100);
+  //   expect(utils.getElement(vm, '.unread-badge')).to.exist;
+  //   expect(utils.getElement(vm, '.unread-badge').textContent).to.contain('99+');
 
-    stub.restore();
-  });
+  //   stub.restore();
+  // });
 })

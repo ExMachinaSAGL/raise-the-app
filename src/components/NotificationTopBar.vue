@@ -34,6 +34,7 @@ export default Vue.extend({
           return n.unread;
         }).length;
       this.unreadCount = count;
+      console.log('mutation');
     });
   },
 
@@ -55,19 +56,19 @@ export default Vue.extend({
         return configUtils.getLevel(top.priority).color;
       }
       return '';
-    },
-    unreadCount (): number {
-      return store.state.raiseTheApp.notifications
-        .filter((n: Notification) => {
-          return n.unread;
-        }).length;
     }
+    // unreadCount (): number {
+    //   return store.state.raiseTheApp.notifications
+    //     .filter((n: Notification) => {
+    //       return n.unread;
+    //     }).length;
+    // }
   },
 
   data () {
     return {
-      emptyText: 'There are no unread notifications.'
-      // unreadCount: 0
+      emptyText: 'There are no unread notifications.',
+      unreadCount: 0
     }
   },
 
