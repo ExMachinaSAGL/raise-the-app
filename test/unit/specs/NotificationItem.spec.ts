@@ -4,7 +4,7 @@ import 'babel-polyfill'
 import Vue from 'vue'
 import NotificationItem from '../../../src/components/NotificationItem.vue'
 import { expect } from 'chai';
-import sinon, { SinonStub } from 'sinon'
+import sinon from 'sinon'
 import fetchMock from 'fetch-mock'
 import Notification from '../../../src/lib/Notification'
 import utils from '../lib/testUtils'
@@ -30,7 +30,7 @@ describe('NotificationItem.vue', () => {
       'deleteParams': ['type']
     };
     configUtils.overrideConfig(mockConfig);
-    console.log('NotificationItem', NotificationItem);
+
     vm = utils.setupVue(NotificationItem);
   });
 

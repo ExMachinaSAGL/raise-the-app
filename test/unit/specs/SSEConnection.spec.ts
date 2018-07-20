@@ -1,6 +1,6 @@
 import { expect } from 'chai';
 import { SSEConnection, SSEReadyStates } from '../../../src/lib/SSEConnection'
-import * as sinon from 'sinon'
+import sinon from 'sinon'
 
 describe('SSEConnection', () => {
   let connection: SSEConnection;

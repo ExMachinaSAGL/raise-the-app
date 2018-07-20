@@ -1,8 +1,8 @@
-import Vue, { VueConstructor } from 'vue';
+import Vue from 'vue';
 import NotificationTopBar from '@/components/NotificationTopBar.vue'
 import { expect } from 'chai';
 import Notification from '../../../src/lib/Notification'
-import store, { options, State, RootState } from '../../../src/store/store'
+import store from '../../../src/store/store'
 import utils from '../lib/testUtils'
 
 describe('NotificationTopBar.vue', () => {

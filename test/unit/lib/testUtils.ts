@@ -22,7 +22,7 @@ export default {
     return vm.$el.querySelector(selector);
   },
 
-  setupVue (module: VueConstructor): any {
+  setupVue (module: VueConstructor): Vue | null {
     const testActions = {
       resetStore ({ commit }: any) {
         commit('reset');
@@ -45,7 +45,7 @@ export default {
       // console.log('constructor', Constructor);
       return new Constructor().$mount();
     }
-
+    return null;
   },
 
   tearDownVue (vm: any): void {

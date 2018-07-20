@@ -1,5 +1,5 @@
 import Vue from 'vue'
-import NotificationsView from '@/components/NotificationsView'
+import NotificationsView from '@/components/NotificationsView.vue'
 import { expect } from 'chai';
 import sinon, { SinonStub } from 'sinon'
 import fetchMock from 'fetch-mock'

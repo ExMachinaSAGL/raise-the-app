@@ -1,5 +1,5 @@
 import Vue from 'vue'
-import RaiseTheApp from '@/components/RaiseTheApp'
+import RaiseTheApp from '@/components/RaiseTheApp.vue'
 import { expect } from 'chai';
 import { SSEReadyStates } from '../../../src/lib/SSEConnection'
 import sinon, { SinonStub } from 'sinon'
