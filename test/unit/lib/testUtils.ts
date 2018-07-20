@@ -18,7 +18,7 @@ export default {
     return notification;
   },
 
-  getElement(vm: Vue, selector: string): Element {
+  getElement(vm: Vue, selector: string): Element | null {
     return vm.$el.querySelector(selector);
   },
 
@@ -29,7 +29,7 @@ export default {
       }
     };
     const testMutations = {
-      reset (state) {
+      reset (state: State) {
         state.notifications = [];
       }
     };

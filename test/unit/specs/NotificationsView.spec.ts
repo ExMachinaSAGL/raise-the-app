@@ -29,7 +29,8 @@ describe('NotificationsView.vue', () => {
     expect(utils.getElement(vm, '#empty')).to.exist;
     expect(utils.getElement(vm, '#empty')).to.exist;
     expect(utils.getElement(vm, 'ul li')).to.not.exist;
-    expect(utils.getElement(vm, '#empty').textContent).to.contain(vm.emptyText);
+    const emptyEl: any = utils.getElement(vm, '#empty') || {};
+    expect(emptyEl.textContent).to.contain(vm.emptyText);
     done();
   });
 
