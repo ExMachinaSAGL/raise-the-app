@@ -40,7 +40,7 @@ export default Vue.extend({
 
   computed: {
     notifications () {
-      return store.state.raiseTheApp.notifications;
+      return this.$store.state.raiseTheApp.notifications;
     },
     // Vuex helpers do not work with TypeScript type check,
     // since their props do not get recognised as part of the Vue component
