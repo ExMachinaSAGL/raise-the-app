@@ -1,7 +1,8 @@
-import Vue from 'vue';
+import Vue, { VueConstructor } from 'vue';
 import NotificationTopBar from '@/components/NotificationTopBar.vue'
 import { expect } from 'chai';
 import Notification from '../../../src/lib/Notification'
+import store, { options, State, RootState } from '../../../src/store/store'
 import utils from '../lib/testUtils'
 
 describe('NotificationTopBar.vue', () => {
@@ -10,11 +11,9 @@ describe('NotificationTopBar.vue', () => {
   const pushNotificationBatch = (amount: number): void => {
     for (let i = 0; i < amount; i++) {
       const notification: Notification = utils.generateNotification('Example Title', 'Example text', 0, 'broadcast');
-      // console.log('new notification', notification);
-      vm.$store.dispatch('raiseTheApp/addNotification', notification);
+      store.dispatch('raiseTheApp/addNotification', notification);
     }
   }
-
   beforeEach(() => {
     vm = utils.setupVue(NotificationTopBar);
   });
@@ -27,25 +26,19 @@ describe('NotificationTopBar.vue', () => {
     expect(vm.unreadCount).to.equal(0);
     expect(utils.getElement(vm, '.unread-badge')).to.not.exist;
     
-    // const stub: SinonStub = sinon.stub(vm, 'showNotifications').value(true);
-    console.log('before push');
-    pushNotificationBatch(10);
-    console.log('vm store', vm.$store.state.raiseTheApp.notifications);
-    console.log('count', vm.unreadCount);
-    console.log('after push');
+    pushNotificationBatch(5);
     
     await Vue.nextTick();
-    console.log('current store', vm.$store.state.raiseTheApp.notifications, vm.unreadCount);
-    expect(vm.unreadCount).to.equal(10);
-    expect(utils.getElement(vm, '.unread-badge')).to.exist;
-    expect(utils.getElement(vm, '.unread-badge').textContent).to.contain('10');
-    pushNotificationBatch(90);
+    expect(vm.unreadCount).to.equal(5);
+    let el: any = utils.getElement(vm, '.unread-badge');
+    expect(el).to.exist;
+    expect(el.textContent).to.contain('5');
+    pushNotificationBatch(95);
 
     await Vue.nextTick();
     expect(vm.unreadCount).to.equal(100);
-    expect(utils.getElement(vm, '.unread-badge')).to.exist;
-    expect(utils.getElement(vm, '.unread-badge').textContent).to.contain('99+');
-
-    // stub.restore();
+    el = utils.getElement(vm, '.unread-badge');
+    expect(el).to.exist;
+    expect(el.textContent).to.contain('99+');
   });
 })
