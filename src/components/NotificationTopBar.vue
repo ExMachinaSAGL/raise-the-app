@@ -28,8 +28,7 @@ export default Vue.extend({
      * WORKAROUND: solves the issue of not always updating the unread count on
      * notifications array mutation.
      */
-    this.$store.subscribe((mutation, state) => {
-      console.log('trigger mutation', mutation.type);
+    store.subscribe((mutation, state) => {
       const count: number = state.raiseTheApp.notifications
         .filter((n: Notification) => {
           return n.unread;
@@ -40,7 +39,7 @@ export default Vue.extend({
 
   computed: {
     notifications () {
-      return this.$store.state.raiseTheApp.notifications;
+      return store.state.raiseTheApp.notifications;
     },
     // Vuex helpers do not work with TypeScript type check,
     // since their props do not get recognised as part of the Vue component
