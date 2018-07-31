@@ -253,11 +253,6 @@ Right now, the priority-specific style is defined inside the `src/config/config.
 One possible rework is to only theme using `*.scss` files, and for each notification priority level we add a class with a name such as `notification-X`, where `X` is the priority level.
 In that case, the number of classes must be defined somewhere also in the config.
 
-### TypeScript configuration
-Right now TypeScript's strict mode (`"strict"` flag in `tsconfig.json`) is disabled due to issues with Vue types (fields such as props or data are not recognized as part of the Vue component).
-
-However this can probably be fixed by using a different Vue component syntax (i.e [vue-class-component](https://github.com/vuejs/vue-class-component)).
-
 
 ## License
 Copyright 2018 ExMachina SAGL (http://www.exmachina.ch)
