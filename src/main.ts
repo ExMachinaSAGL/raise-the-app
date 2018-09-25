@@ -12,6 +12,6 @@ Vue.config.productionTip = false
 new Vue({
   el: '#notifications-popup',
   store,
-  template: '<RaiseTheApp/>',
+  template: '<raise-the-app server-url="http://localhost:3000"></raise-the-app>',
   components: { RaiseTheApp }
 })

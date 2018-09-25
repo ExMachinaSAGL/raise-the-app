@@ -9,41 +9,53 @@ const server = http.createServer((req, res) => {
 
   // Server-sent events endpoint
   if (req.url === '/subscribe') {
+    console.log(req.url);
     // set response
     // header
     res.setHeader('Connection', 'keep-alive');
     res.setHeader('Cache-Control', 'no-cache');
     res.setHeader('Content-Type', 'text/event-stream');
-    res.setHeader('Access-Control-Allow-Origin', '*');
+    res.setHeader('Access-Control-Allow-Credentials', 'true');
+    res.setHeader('Access-Control-Allow-Origin', 'http://localhost:8000');
 
     // body
     /*
     Example response:
       event: notify\n
-      id: 123\n
-      data: { "title": "Notification Title",
-        "text": "Lorem ipsum.",
-        "priority": 2,
-        "id": "1345f488-5aaa-4c4b-9076-f3eb12905556",
-        "unread": true,
-        "time": "Fri, 15 Dec 2017 08:53:12 GMT"
+      data: {
+        "id":2,
+        "title":"TEST",
+        "text":"MEssaggio di test",
+        "unread":true,
+        "creationTime":"2018-09-25T15:23:48",
+        "priority":0,
+        "application":"ALL",
+        "validFrom":"2018-09-25T15:23:48",
+        "validTo":"2018-09-25T17:23:48",
+        "type":"BROADCAST"
       }\n\n
     */
     let event = 'event: notify';
-    let id = `id: ${Date.now()}`;
     let data = `data: ${JSON.stringify({
-      'title': 'Notification Title',
-      'text': 'A new wonderful task!',
-      'priority': 2,
-      'id': '1345f488-5aaa-4c4b-9076-f3eb12905556',
-      'unread': true,
-      'time': 'Fri, 15 Dec 2017 08:53:12 GMT'
+      "id":2,
+      "title":"TEST",
+      "text":"MEssaggio di test",
+      "unread":true,
+      "creationTime":"2018-09-25T15:23:48",
+      "priority":0,
+      "application":"ALL",
+      "validFrom":"2018-09-25T15:23:48",
+      "validTo":"2018-09-25T17:23:48",
+      "type":"BROADCAST"
     })}`;
 
-    res.end(`${event}\n${id}\n${data}\n\n`);
+    console.log('RESPONSE:');
+    console.log(`${event}\n${data}\n\n`);
+
+    res.end(`${event}\n${data}\n\n`);
   }
   if (req.url.indexOf('/notifications') >= 0) {
-    res.setHeader('Access-Control-Allow-Origin', '*');
+    res.setHeader('Access-Control-Allow-Origin', 'http://localhost:8000');
     if (req.url.indexOf('/readAll') >= 0) {
       res.end();
     } else if (req.url.indexOf('/read') >= 0) {

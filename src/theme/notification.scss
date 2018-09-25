@@ -91,4 +91,11 @@ $header-height: 60px;
   p {
     font-size: 12px;
   }
+  .notification-datetime {
+    @include title;
+    font-weight: normal;
+    span {
+      font-weight: bold;
+    }
+  }
 }

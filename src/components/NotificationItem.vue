@@ -18,6 +18,10 @@
         <p :class="[notification.unread ? 'notification-title-unread' : 'notification-title-read']">
           {{ notification.title }}
         </p>
+        <p class="notification-datetime">
+          <span>Date &amp; Time:</span>
+          {{notification.validFrom | datetime}}
+        </p>
         <p class="notification-text">
           <span v-html="excerpt"></span>
           <span v-if="showMore || expanded" class="excerpt-btn" @click="toggleExpand">{{expanded ? ' (show less)' : ' (show more)'}}</span>
@@ -35,9 +39,14 @@ import linkifyHtml from 'linkifyjs/html'
 import { mapActions, mapState } from 'vuex'
 import Vue, {VueConstructor} from 'vue';
 import store from '@/store/store';
+import datetime from './../lib/datetimeFilter';
 
 export default Vue.extend({
   name: 'notification-item',
+
+  filters: {
+    datetime
+  },
 
   props: {
     notification: {
