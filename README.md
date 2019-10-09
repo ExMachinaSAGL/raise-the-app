@@ -1,4 +1,4 @@
-**DEPRECATION WARNING**: this module is deprecated and will be deleted soon. Please replace it with the new [**sentioo**](https://github.com/ExMachinaSAGL/sentioo) package.
+> **DEPRECATION WARNING**: this module is deprecated and will be deleted soon. Please replace it with the new [**sentioo**](https://github.com/ExMachinaSAGL/sentioo) package.
 
 
 
