@@ -74,7 +74,7 @@
     "fetch-mock": "^5.13.1",
     "file-loader": "^1.1.11",
     "friendly-errors-webpack-plugin": "^1.7.0",
-    "html-webpack-plugin": "^2.28.0",
+    "html-webpack-plugin": "^5.5.0",
     "http-proxy-middleware": "^0.18.0",
     "inject-loader": "^3.0.0",
     "json-loader": "^0.5.7",
